@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/Route102K_1.js"></script>
+        <script src="data/Route119_2.js"></script>
+        <script src="data/Route159A_3.js"></script>
+        <script src="data/Route26_4.js"></script>
+        <script src="data/Route29C_5.js"></script>
+        <script src="data/Route2A_6.js"></script>
+        <script src="data/Route32B_7.js"></script>
+        <script src="data/Route4_8.js"></script>
+        <script src="data/Route48C_9.js"></script>
+        <script src="data/Route32B_10.js"></script>
+        <script src="data/Route4_11.js"></script>
+        <script src="data/Route48C_12.js"></script>
+        <script src="data/Busstopswithluxlesserthan40_13.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[12.846701185865555,80.02870376717603],[13.26757028544376,80.39927568086439]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_OpenStreetMap_0');
+        map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map.addLayer(layer_OpenStreetMap_0);
+        function pop_Route102K_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route102K_1_0() {
+            return {
+                pane: 'pane_Route102K_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route102K_1');
+        map.getPane('pane_Route102K_1').style.zIndex = 401;
+        map.getPane('pane_Route102K_1').style['mix-blend-mode'] = 'normal';
+        var layer_Route102K_1 = new L.geoJson(json_Route102K_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route102K_1',
+            layerName: 'layer_Route102K_1',
+            pane: 'pane_Route102K_1',
+            onEachFeature: pop_Route102K_1,
+            style: style_Route102K_1_0,
+        });
+        bounds_group.addLayer(layer_Route102K_1);
+        map.addLayer(layer_Route102K_1);
+        function pop_Route119_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route119_2_0() {
+            return {
+                pane: 'pane_Route119_2',
+                opacity: 1,
+                color: 'rgba(225,89,137,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route119_2');
+        map.getPane('pane_Route119_2').style.zIndex = 402;
+        map.getPane('pane_Route119_2').style['mix-blend-mode'] = 'normal';
+        var layer_Route119_2 = new L.geoJson(json_Route119_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route119_2',
+            layerName: 'layer_Route119_2',
+            pane: 'pane_Route119_2',
+            onEachFeature: pop_Route119_2,
+            style: style_Route119_2_0,
+        });
+        bounds_group.addLayer(layer_Route119_2);
+        map.addLayer(layer_Route119_2);
+        function pop_Route159A_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route159A_3_0() {
+            return {
+                pane: 'pane_Route159A_3',
+                opacity: 1,
+                color: 'rgba(125,139,143,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route159A_3');
+        map.getPane('pane_Route159A_3').style.zIndex = 403;
+        map.getPane('pane_Route159A_3').style['mix-blend-mode'] = 'normal';
+        var layer_Route159A_3 = new L.geoJson(json_Route159A_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route159A_3',
+            layerName: 'layer_Route159A_3',
+            pane: 'pane_Route159A_3',
+            onEachFeature: pop_Route159A_3,
+            style: style_Route159A_3_0,
+        });
+        bounds_group.addLayer(layer_Route159A_3);
+        map.addLayer(layer_Route159A_3);
+        function pop_Route26_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route26_4_0() {
+            return {
+                pane: 'pane_Route26_4',
+                opacity: 1,
+                color: 'rgba(114,155,111,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route26_4');
+        map.getPane('pane_Route26_4').style.zIndex = 404;
+        map.getPane('pane_Route26_4').style['mix-blend-mode'] = 'normal';
+        var layer_Route26_4 = new L.geoJson(json_Route26_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route26_4',
+            layerName: 'layer_Route26_4',
+            pane: 'pane_Route26_4',
+            onEachFeature: pop_Route26_4,
+            style: style_Route26_4_0,
+        });
+        bounds_group.addLayer(layer_Route26_4);
+        map.addLayer(layer_Route26_4);
+        function pop_Route29C_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route29C_5_0() {
+            return {
+                pane: 'pane_Route29C_5',
+                opacity: 1,
+                color: 'rgba(239,136,39,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route29C_5');
+        map.getPane('pane_Route29C_5').style.zIndex = 405;
+        map.getPane('pane_Route29C_5').style['mix-blend-mode'] = 'normal';
+        var layer_Route29C_5 = new L.geoJson(json_Route29C_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route29C_5',
+            layerName: 'layer_Route29C_5',
+            pane: 'pane_Route29C_5',
+            onEachFeature: pop_Route29C_5,
+            style: style_Route29C_5_0,
+        });
+        bounds_group.addLayer(layer_Route29C_5);
+        map.addLayer(layer_Route29C_5);
+        function pop_Route2A_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route2A_6_0() {
+            return {
+                pane: 'pane_Route2A_6',
+                opacity: 1,
+                color: 'rgba(53,174,100,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route2A_6');
+        map.getPane('pane_Route2A_6').style.zIndex = 406;
+        map.getPane('pane_Route2A_6').style['mix-blend-mode'] = 'normal';
+        var layer_Route2A_6 = new L.geoJson(json_Route2A_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route2A_6',
+            layerName: 'layer_Route2A_6',
+            pane: 'pane_Route2A_6',
+            onEachFeature: pop_Route2A_6,
+            style: style_Route2A_6_0,
+        });
+        bounds_group.addLayer(layer_Route2A_6);
+        map.addLayer(layer_Route2A_6);
+        function pop_Route32B_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route32B_7_0() {
+            return {
+                pane: 'pane_Route32B_7',
+                opacity: 1,
+                color: 'rgba(213,180,60,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route32B_7');
+        map.getPane('pane_Route32B_7').style.zIndex = 407;
+        map.getPane('pane_Route32B_7').style['mix-blend-mode'] = 'normal';
+        var layer_Route32B_7 = new L.geoJson(json_Route32B_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route32B_7',
+            layerName: 'layer_Route32B_7',
+            pane: 'pane_Route32B_7',
+            onEachFeature: pop_Route32B_7,
+            style: style_Route32B_7_0,
+        });
+        bounds_group.addLayer(layer_Route32B_7);
+        map.addLayer(layer_Route32B_7);
+        function pop_Route4_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="id"colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route4_8_0() {
+            return {
+                pane: 'pane_Route4_8',
+                opacity: 1,
+                color: 'rgba(141,90,153,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route4_8');
+        map.getPane('pane_Route4_8').style.zIndex = 408;
+        map.getPane('pane_Route4_8').style['mix-blend-mode'] = 'normal';
+        var layer_Route4_8 = new L.geoJson(json_Route4_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route4_8',
+            layerName: 'layer_Route4_8',
+            pane: 'pane_Route4_8',
+            onEachFeature: pop_Route4_8,
+            style: style_Route4_8_0,
+        });
+        bounds_group.addLayer(layer_Route4_8);
+        map.addLayer(layer_Route4_8);
+        function pop_Route48C_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route48C_9_0() {
+            return {
+                pane: 'pane_Route48C_9',
+                opacity: 1,
+                color: 'rgba(133,182,111,0.9019607843137255)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route48C_9');
+        map.getPane('pane_Route48C_9').style.zIndex = 409;
+        map.getPane('pane_Route48C_9').style['mix-blend-mode'] = 'normal';
+        var layer_Route48C_9 = new L.geoJson(json_Route48C_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route48C_9',
+            layerName: 'layer_Route48C_9',
+            pane: 'pane_Route48C_9',
+            onEachFeature: pop_Route48C_9,
+            style: style_Route48C_9_0,
+        });
+        bounds_group.addLayer(layer_Route48C_9);
+        map.addLayer(layer_Route48C_9);
+        function pop_Route32B_10(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route32B_10_0() {
+            return {
+                pane: 'pane_Route32B_10',
+                opacity: 1,
+                color: 'rgba(213,180,60,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route32B_10');
+        map.getPane('pane_Route32B_10').style.zIndex = 410;
+        map.getPane('pane_Route32B_10').style['mix-blend-mode'] = 'normal';
+        var layer_Route32B_10 = new L.geoJson(json_Route32B_10, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route32B_10',
+            layerName: 'layer_Route32B_10',
+            pane: 'pane_Route32B_10',
+            onEachFeature: pop_Route32B_10,
+            style: style_Route32B_10_0,
+        });
+        bounds_group.addLayer(layer_Route32B_10);
+        map.addLayer(layer_Route32B_10);
+        function pop_Route4_11(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="id"colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route4_11_0() {
+            return {
+                pane: 'pane_Route4_11',
+                opacity: 1,
+                color: 'rgba(141,90,153,0.8)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route4_11');
+        map.getPane('pane_Route4_11').style.zIndex = 411;
+        map.getPane('pane_Route4_11').style['mix-blend-mode'] = 'normal';
+        var layer_Route4_11 = new L.geoJson(json_Route4_11, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route4_11',
+            layerName: 'layer_Route4_11',
+            pane: 'pane_Route4_11',
+            onEachFeature: pop_Route4_11,
+            style: style_Route4_11_0,
+        });
+        bounds_group.addLayer(layer_Route4_11);
+        map.addLayer(layer_Route4_11);
+        function pop_Route48C_12(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="fid"colspan="2"><strong>fid</strong><br />' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Route48C_12_0() {
+            return {
+                pane: 'pane_Route48C_12',
+                opacity: 1,
+                color: 'rgba(133,182,111,0.30196078431372547)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Route48C_12');
+        map.getPane('pane_Route48C_12').style.zIndex = 412;
+        map.getPane('pane_Route48C_12').style['mix-blend-mode'] = 'normal';
+        var layer_Route48C_12 = new L.geoJson(json_Route48C_12, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Route48C_12',
+            layerName: 'layer_Route48C_12',
+            pane: 'pane_Route48C_12',
+            onEachFeature: pop_Route48C_12,
+            style: style_Route48C_12_0,
+        });
+        bounds_group.addLayer(layer_Route48C_12);
+        map.addLayer(layer_Route48C_12);
+        function pop_Busstopswithluxlesserthan40_13(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="uid"colspan="2"><strong>uid</strong><br />' + (feature.properties['uid'] !== null ? autolinker.link(feature.properties['uid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="busroute"colspan="2"><strong>busroute</strong><br />' + (feature.properties['busroute'] !== null ? autolinker.link(feature.properties['busroute'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="a4busstoplocationname"colspan="2"><strong>a4busstoplocationname</strong><br />' + (feature.properties['a4busstoplocationname'] !== null ? autolinker.link(feature.properties['a4busstoplocationname'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="a1zone"colspan="2"><strong>a1zone</strong><br />' + (feature.properties['a1zone'] !== null ? autolinker.link(feature.properties['a1zone'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="a6abusstoplocationonthesideofthe"colspan="2"><strong>a6abusstoplocationonthesideofthe</strong><br />' + (feature.properties['a6abusstoplocationonthesideofthe'] !== null ? autolinker.link(feature.properties['a6abusstoplocationonthesideofthe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="busstopownedbygccyesno"colspan="2"><strong>busstopownedbygccyesno</strong><br />' + (feature.properties['busstopownedbygccyesno'] !== null ? autolinker.link(feature.properties['busstopownedbygccyesno'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q1doesthebusstophaveashelter"colspan="2"><strong>q1doesthebusstophaveashelter</strong><br />' + (feature.properties['q1doesthebusstophaveashelter'] !== null ? autolinker.link(feature.properties['q1doesthebusstophaveashelter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q1ahowmanysheltersdoesthebusstop"colspan="2"><strong>q1ahowmanysheltersdoesthebusstop</strong><br />' + (feature.properties['q1ahowmanysheltersdoesthebusstop'] !== null ? autolinker.link(feature.properties['q1ahowmanysheltersdoesthebusstop'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q2whatmaterialisthebusstopshelte"colspan="2"><strong>q2whatmaterialisthebusstopshelte</strong><br />' + (feature.properties['q2whatmaterialisthebusstopshelte'] !== null ? autolinker.link(feature.properties['q2whatmaterialisthebusstopshelte'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q1a1whatistheconditionoftheroofo"colspan="2"><strong>q1a1whatistheconditionoftheroofo</strong><br />' + (feature.properties['q1a1whatistheconditionoftheroofo'] !== null ? autolinker.link(feature.properties['q1a1whatistheconditionoftheroofo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var11"colspan="2"><strong>var11</strong><br />' + (feature.properties['var11'] !== null ? autolinker.link(feature.properties['var11'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var12"colspan="2"><strong>var12</strong><br />' + (feature.properties['var12'] !== null ? autolinker.link(feature.properties['var12'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q2aisitdamaged"colspan="2"><strong>q2aisitdamaged</strong><br />' + (feature.properties['q2aisitdamaged'] !== null ? autolinker.link(feature.properties['q2aisitdamaged'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q3doesthebusshelterhavea_backpan"colspan="2"><strong>q3doesthebusshelterhavea_backpan</strong><br />' + (feature.properties['q3doesthebusshelterhavea_backpan'] !== null ? autolinker.link(feature.properties['q3doesthebusshelterhavea_backpan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q3doesthebusshelterhavea_toppane"colspan="2"><strong>q3doesthebusshelterhavea_toppane</strong><br />' + (feature.properties['q3doesthebusshelterhavea_toppane'] !== null ? autolinker.link(feature.properties['q3doesthebusshelterhavea_toppane'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q1a2isthereanyspaceorareabehindt"colspan="2"><strong>q1a2isthereanyspaceorareabehindt</strong><br />' + (feature.properties['q1a2isthereanyspaceorareabehindt'] !== null ? autolinker.link(feature.properties['q1a2isthereanyspaceorareabehindt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q1bwheredopassengerstypicallywai"colspan="2"><strong>q1bwheredopassengerstypicallywai</strong><br />' + (feature.properties['q1bwheredopassengerstypicallywai'] !== null ? autolinker.link(feature.properties['q1bwheredopassengerstypicallywai'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var18"colspan="2"><strong>var18</strong><br />' + (feature.properties['var18'] !== null ? autolinker.link(feature.properties['var18'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var19"colspan="2"><strong>var19</strong><br />' + (feature.properties['var19'] !== null ? autolinker.link(feature.properties['var19'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var20"colspan="2"><strong>var20</strong><br />' + (feature.properties['var20'] !== null ? autolinker.link(feature.properties['var20'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var21"colspan="2"><strong>var21</strong><br />' + (feature.properties['var21'] !== null ? autolinker.link(feature.properties['var21'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q4isthereanyseatingarrangementfo"colspan="2"><strong>q4isthereanyseatingarrangementfo</strong><br />' + (feature.properties['q4isthereanyseatingarrangementfo'] !== null ? autolinker.link(feature.properties['q4isthereanyseatingarrangementfo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q5ifyeswhatisthecondition"colspan="2"><strong>q5ifyeswhatisthecondition</strong><br />' + (feature.properties['q5ifyeswhatisthecondition'] !== null ? autolinker.link(feature.properties['q5ifyeswhatisthecondition'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q6howmanypeoplecanbeseatedattheb"colspan="2"><strong>q6howmanypeoplecanbeseatedattheb</strong><br />' + (feature.properties['q6howmanypeoplecanbeseatedattheb'] !== null ? autolinker.link(feature.properties['q6howmanypeoplecanbeseatedattheb'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q6aatthetimeofthevisitwhowasmajo"colspan="2"><strong>q6aatthetimeofthevisitwhowasmajo</strong><br />' + (feature.properties['q6aatthetimeofthevisitwhowasmajo'] !== null ? autolinker.link(feature.properties['q6aatthetimeofthevisitwhowasmajo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q6batthebusstopcanyouspotanychil"colspan="2"><strong>q6batthebusstopcanyouspotanychil</strong><br />' + (feature.properties['q6batthebusstopcanyouspotanychil'] !== null ? autolinker.link(feature.properties['q6batthebusstopcanyouspotanychil'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q6batthebusstopcanyouspotanydiff"colspan="2"><strong>q6batthebusstopcanyouspotanydiff</strong><br />' + (feature.properties['q6batthebusstopcanyouspotanydiff'] !== null ? autolinker.link(feature.properties['q6batthebusstopcanyouspotanydiff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q7isthebusstoplocated"colspan="2"><strong>q7isthebusstoplocated</strong><br />' + (feature.properties['q7isthebusstoplocated'] !== null ? autolinker.link(feature.properties['q7isthebusstoplocated'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q7isthebusstoplocatedotherspecif"colspan="2"><strong>q7isthebusstoplocatedotherspecif</strong><br />' + (feature.properties['q7isthebusstoplocatedotherspecif'] !== null ? autolinker.link(feature.properties['q7isthebusstoplocatedotherspecif'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q7aistheflooringofthebusstopeven"colspan="2"><strong>q7aistheflooringofthebusstopeven</strong><br />' + (feature.properties['q7aistheflooringofthebusstopeven'] !== null ? autolinker.link(feature.properties['q7aistheflooringofthebusstopeven'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q8potholespresent"colspan="2"><strong>q8potholespresent</strong><br />' + (feature.properties['q8potholespresent'] !== null ? autolinker.link(feature.properties['q8potholespresent'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q8crackspresent"colspan="2"><strong>q8crackspresent</strong><br />' + (feature.properties['q8crackspresent'] !== null ? autolinker.link(feature.properties['q8crackspresent'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q8unevensurfacepresent"colspan="2"><strong>q8unevensurfacepresent</strong><br />' + (feature.properties['q8unevensurfacepresent'] !== null ? autolinker.link(feature.properties['q8unevensurfacepresent'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9encroachmentbyshops"colspan="2"><strong>q9encroachmentbyshops</strong><br />' + (feature.properties['q9encroachmentbyshops'] !== null ? autolinker.link(feature.properties['q9encroachmentbyshops'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9treestreebranches"colspan="2"><strong>q9treestreebranches</strong><br />' + (feature.properties['q9treestreebranches'] !== null ? autolinker.link(feature.properties['q9treestreebranches'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9electricitypoles"colspan="2"><strong>q9electricitypoles</strong><br />' + (feature.properties['q9electricitypoles'] !== null ? autolinker.link(feature.properties['q9electricitypoles'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9electricwatertelecomboxes"colspan="2"><strong>q9electricwatertelecomboxes</strong><br />' + (feature.properties['q9electricwatertelecomboxes'] !== null ? autolinker.link(feature.properties['q9electricwatertelecomboxes'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9temporaryvendors"colspan="2"><strong>q9temporaryvendors</strong><br />' + (feature.properties['q9temporaryvendors'] !== null ? autolinker.link(feature.properties['q9temporaryvendors'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9encroachmentbyvehicles"colspan="2"><strong>q9encroachmentbyvehicles</strong><br />' + (feature.properties['q9encroachmentbyvehicles'] !== null ? autolinker.link(feature.properties['q9encroachmentbyvehicles'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9none"colspan="2"><strong>q9none</strong><br />' + (feature.properties['q9none'] !== null ? autolinker.link(feature.properties['q9none'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9others"colspan="2"><strong>q9others</strong><br />' + (feature.properties['q9others'] !== null ? autolinker.link(feature.properties['q9others'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q9othersspecify"colspan="2"><strong>q9othersspecify</strong><br />' + (feature.properties['q9othersspecify'] !== null ? autolinker.link(feature.properties['q9othersspecify'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="isthewaitingareaatthebusstopsuff"colspan="2"><strong>isthewaitingareaatthebusstopsuff</strong><br />' + (feature.properties['isthewaitingareaatthebusstopsuff'] !== null ? autolinker.link(feature.properties['isthewaitingareaatthebusstopsuff'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var44"colspan="2"><strong>var44</strong><br />' + (feature.properties['var44'] !== null ? autolinker.link(feature.properties['var44'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q12doestheroadadjacenttothebusst"colspan="2"><strong>q12doestheroadadjacenttothebusst</strong><br />' + (feature.properties['q12doestheroadadjacenttothebusst'] !== null ? autolinker.link(feature.properties['q12doestheroadadjacenttothebusst'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q13whattypeofkerbispresentthere"colspan="2"><strong>q13whattypeofkerbispresentthere</strong><br />' + (feature.properties['q13whattypeofkerbispresentthere'] !== null ? autolinker.link(feature.properties['q13whattypeofkerbispresentthere'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q14isthekerbuniformlyraisedalong"colspan="2"><strong>q14isthekerbuniformlyraisedalong</strong><br />' + (feature.properties['q14isthekerbuniformlyraisedalong'] !== null ? autolinker.link(feature.properties['q14isthekerbuniformlyraisedalong'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q15isthekerbpainted"colspan="2"><strong>q15isthekerbpainted</strong><br />' + (feature.properties['q15isthekerbpainted'] !== null ? autolinker.link(feature.properties['q15isthekerbpainted'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q16inwhatcoloristhekerbpainted"colspan="2"><strong>q16inwhatcoloristhekerbpainted</strong><br />' + (feature.properties['q16inwhatcoloristhekerbpainted'] !== null ? autolinker.link(feature.properties['q16inwhatcoloristhekerbpainted'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="othersspecify"colspan="2"><strong>othersspecify</strong><br />' + (feature.properties['othersspecify'] !== null ? autolinker.link(feature.properties['othersspecify'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q17isthereakerbramppresentattheb"colspan="2"><strong>q17isthereakerbramppresentattheb</strong><br />' + (feature.properties['q17isthereakerbramppresentattheb'] !== null ? autolinker.link(feature.properties['q17isthereakerbramppresentattheb'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q18isthereatactilewarningstripat"colspan="2"><strong>q18isthereatactilewarningstripat</strong><br />' + (feature.properties['q18isthereatactilewarningstripat'] !== null ? autolinker.link(feature.properties['q18isthereatactilewarningstripat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q19istheresufficientspaceforthem"colspan="2"><strong>q19istheresufficientspaceforthem</strong><br />' + (feature.properties['q19istheresufficientspaceforthem'] !== null ? autolinker.link(feature.properties['q19istheresufficientspaceforthem'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q20isthereanypedestriancrossingv"colspan="2"><strong>q20isthereanypedestriancrossingv</strong><br />' + (feature.properties['q20isthereanypedestriancrossingv'] !== null ? autolinker.link(feature.properties['q20isthereanypedestriancrossingv'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q21isthepedestriancrossingelevat"colspan="2"><strong>q21isthepedestriancrossingelevat</strong><br />' + (feature.properties['q21isthepedestriancrossingelevat'] !== null ? autolinker.link(feature.properties['q21isthepedestriancrossingelevat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q22onwhichsideofthebusstopisthep"colspan="2"><strong>q22onwhichsideofthebusstopisthep</strong><br />' + (feature.properties['q22onwhichsideofthebusstopisthep'] !== null ? autolinker.link(feature.properties['q22onwhichsideofthebusstopisthep'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q23isthereanytrafficsignalnearth"colspan="2"><strong>q23isthereanytrafficsignalnearth</strong><br />' + (feature.properties['q23isthereanytrafficsignalnearth'] !== null ? autolinker.link(feature.properties['q23isthereanytrafficsignalnearth'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q24arethereanyspeedbreakersprese"colspan="2"><strong>q24arethereanyspeedbreakersprese</strong><br />' + (feature.properties['q24arethereanyspeedbreakersprese'] !== null ? autolinker.link(feature.properties['q24arethereanyspeedbreakersprese'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q25arethespeedbreakersclearlymar"colspan="2"><strong>q25arethespeedbreakersclearlymar</strong><br />' + (feature.properties['q25arethespeedbreakersclearlymar'] !== null ? autolinker.link(feature.properties['q25arethespeedbreakersclearlymar'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_aonthesidewalksaroundthebus"colspan="2"><strong>q26a_aonthesidewalksaroundthebus</strong><br />' + (feature.properties['q26a_aonthesidewalksaroundthebus'] !== null ? autolinker.link(feature.properties['q26a_aonthesidewalksaroundthebus'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var61"colspan="2"><strong>var61</strong><br />' + (feature.properties['var61'] !== null ? autolinker.link(feature.properties['var61'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var62"colspan="2"><strong>var62</strong><br />' + (feature.properties['var62'] !== null ? autolinker.link(feature.properties['var62'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var63"colspan="2"><strong>var63</strong><br />' + (feature.properties['var63'] !== null ? autolinker.link(feature.properties['var63'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var64"colspan="2"><strong>var64</strong><br />' + (feature.properties['var64'] !== null ? autolinker.link(feature.properties['var64'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var65"colspan="2"><strong>var65</strong><br />' + (feature.properties['var65'] !== null ? autolinker.link(feature.properties['var65'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var66"colspan="2"><strong>var66</strong><br />' + (feature.properties['var66'] !== null ? autolinker.link(feature.properties['var66'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_batthebusstop_presenceofgra"colspan="2"><strong>q26a_batthebusstop_presenceofgra</strong><br />' + (feature.properties['q26a_batthebusstop_presenceofgra'] !== null ? autolinker.link(feature.properties['q26a_batthebusstop_presenceofgra'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_batthebusstop_litter"colspan="2"><strong>q26a_batthebusstop_litter</strong><br />' + (feature.properties['q26a_batthebusstop_litter'] !== null ? autolinker.link(feature.properties['q26a_batthebusstop_litter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_batthebusstop_occupancybyun"colspan="2"><strong>q26a_batthebusstop_occupancybyun</strong><br />' + (feature.properties['q26a_batthebusstop_occupancybyun'] !== null ? autolinker.link(feature.properties['q26a_batthebusstop_occupancybyun'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_batthebusstop_occupancybyve"colspan="2"><strong>q26a_batthebusstop_occupancybyve</strong><br />' + (feature.properties['q26a_batthebusstop_occupancybyve'] !== null ? autolinker.link(feature.properties['q26a_batthebusstop_occupancybyve'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_batthebusstop_sidewalksindi"colspan="2"><strong>q26a_batthebusstop_sidewalksindi</strong><br />' + (feature.properties['q26a_batthebusstop_sidewalksindi'] !== null ? autolinker.link(feature.properties['q26a_batthebusstop_sidewalksindi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_batthebusstop_largegarbageb"colspan="2"><strong>q26a_batthebusstop_largegarbageb</strong><br />' + (feature.properties['q26a_batthebusstop_largegarbageb'] !== null ? autolinker.link(feature.properties['q26a_batthebusstop_largegarbageb'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_batthebusstop_none"colspan="2"><strong>q26a_batthebusstop_none</strong><br />' + (feature.properties['q26a_batthebusstop_none'] !== null ? autolinker.link(feature.properties['q26a_batthebusstop_none'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_aoccupancybyunhousedpeoplea"colspan="2"><strong>q26a_aoccupancybyunhousedpeoplea</strong><br />' + (feature.properties['q26a_aoccupancybyunhousedpeoplea'] !== null ? autolinker.link(feature.properties['q26a_aoccupancybyunhousedpeoplea'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q26a_aoccupancybyvendors"colspan="2"><strong>q26a_aoccupancybyvendors</strong><br />' + (feature.properties['q26a_aoccupancybyvendors'] !== null ? autolinker.link(feature.properties['q26a_aoccupancybyvendors'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var76"colspan="2"><strong>var76</strong><br />' + (feature.properties['var76'] !== null ? autolinker.link(feature.properties['var76'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var77"colspan="2"><strong>var77</strong><br />' + (feature.properties['var77'] !== null ? autolinker.link(feature.properties['var77'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q28isthebusstopandthesurrounding"colspan="2"><strong>q28isthebusstopandthesurrounding</strong><br />' + (feature.properties['q28isthebusstopandthesurrounding'] !== null ? autolinker.link(feature.properties['q28isthebusstopandthesurrounding'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_tubelightsledcf"colspan="2"><strong>q29sourceoflight_tubelightsledcf</strong><br />' + (feature.properties['q29sourceoflight_tubelightsledcf'] !== null ? autolinker.link(feature.properties['q29sourceoflight_tubelightsledcf'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_streetlightsnea"colspan="2"><strong>q29sourceoflight_streetlightsnea</strong><br />' + (feature.properties['q29sourceoflight_streetlightsnea'] !== null ? autolinker.link(feature.properties['q29sourceoflight_streetlightsnea'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_lightfromthebac"colspan="2"><strong>q29sourceoflight_lightfromthebac</strong><br />' + (feature.properties['q29sourceoflight_lightfromthebac'] !== null ? autolinker.link(feature.properties['q29sourceoflight_lightfromthebac'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_lightsfromtheto"colspan="2"><strong>q29sourceoflight_lightsfromtheto</strong><br />' + (feature.properties['q29sourceoflight_lightsfromtheto'] !== null ? autolinker.link(feature.properties['q29sourceoflight_lightsfromtheto'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_reflectivelight"colspan="2"><strong>q29sourceoflight_reflectivelight</strong><br />' + (feature.properties['q29sourceoflight_reflectivelight'] !== null ? autolinker.link(feature.properties['q29sourceoflight_reflectivelight'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_highmastlightat"colspan="2"><strong>q29sourceoflight_highmastlightat</strong><br />' + (feature.properties['q29sourceoflight_highmastlightat'] !== null ? autolinker.link(feature.properties['q29sourceoflight_highmastlightat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_none"colspan="2"><strong>q29sourceoflight_none</strong><br />' + (feature.properties['q29sourceoflight_none'] !== null ? autolinker.link(feature.properties['q29sourceoflight_none'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29sourceoflight_otherpleasespec"colspan="2"><strong>q29sourceoflight_otherpleasespec</strong><br />' + (feature.properties['q29sourceoflight_otherpleasespec'] !== null ? autolinker.link(feature.properties['q29sourceoflight_otherpleasespec'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var87"colspan="2"><strong>var87</strong><br />' + (feature.properties['var87'] !== null ? autolinker.link(feature.properties['var87'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29aisthereadarkspotcompletedark"colspan="2"><strong>q29aisthereadarkspotcompletedark</strong><br />' + (feature.properties['q29aisthereadarkspotcompletedark'] !== null ? autolinker.link(feature.properties['q29aisthereadarkspotcompletedark'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29bnolightfromthenearbyshopsres"colspan="2"><strong>q29bnolightfromthenearbyshopsres</strong><br />' + (feature.properties['q29bnolightfromthenearbyshopsres'] !== null ? autolinker.link(feature.properties['q29bnolightfromthenearbyshopsres'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29babsenceofstreetlight"colspan="2"><strong>q29babsenceofstreetlight</strong><br />' + (feature.properties['q29babsenceofstreetlight'] !== null ? autolinker.link(feature.properties['q29babsenceofstreetlight'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29bnonfunctionalstreetlight"colspan="2"><strong>q29bnonfunctionalstreetlight</strong><br />' + (feature.properties['q29bnonfunctionalstreetlight'] !== null ? autolinker.link(feature.properties['q29bnonfunctionalstreetlight'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29bnotsure"colspan="2"><strong>q29bnotsure</strong><br />' + (feature.properties['q29bnotsure'] !== null ? autolinker.link(feature.properties['q29bnotsure'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29bother"colspan="2"><strong>q29bother</strong><br />' + (feature.properties['q29bother'] !== null ? autolinker.link(feature.properties['q29bother'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q29bothersspecify"colspan="2"><strong>q29bothersspecify</strong><br />' + (feature.properties['q29bothersspecify'] !== null ? autolinker.link(feature.properties['q29bothersspecify'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q30aisthereabusstopflagpostneart"colspan="2"><strong>q30aisthereabusstopflagpostneart</strong><br />' + (feature.properties['q30aisthereabusstopflagpostneart'] !== null ? autolinker.link(feature.properties['q30aisthereabusstopflagpostneart'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q30arethereanysignagesatthebusst"colspan="2"><strong>q30arethereanysignagesatthebusst</strong><br />' + (feature.properties['q30arethereanysignagesatthebusst'] !== null ? autolinker.link(feature.properties['q30arethereanysignagesatthebusst'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q31aretheydigitalorprinted"colspan="2"><strong>q31aretheydigitalorprinted</strong><br />' + (feature.properties['q31aretheydigitalorprinted'] !== null ? autolinker.link(feature.properties['q31aretheydigitalorprinted'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q33arethesignagesmultilingual"colspan="2"><strong>q33arethesignagesmultilingual</strong><br />' + (feature.properties['q33arethesignagesmultilingual'] !== null ? autolinker.link(feature.properties['q33arethesignagesmultilingual'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q34_languageofsignage_tamil"colspan="2"><strong>q34_languageofsignage_tamil</strong><br />' + (feature.properties['q34_languageofsignage_tamil'] !== null ? autolinker.link(feature.properties['q34_languageofsignage_tamil'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q34_languageofsignage_english"colspan="2"><strong>q34_languageofsignage_english</strong><br />' + (feature.properties['q34_languageofsignage_english'] !== null ? autolinker.link(feature.properties['q34_languageofsignage_english'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q34_languageofsignage_hindi"colspan="2"><strong>q34_languageofsignage_hindi</strong><br />' + (feature.properties['q34_languageofsignage_hindi'] !== null ? autolinker.link(feature.properties['q34_languageofsignage_hindi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q34_languageofsignage_othersspec"colspan="2"><strong>q34_languageofsignage_othersspec</strong><br />' + (feature.properties['q34_languageofsignage_othersspec'] !== null ? autolinker.link(feature.properties['q34_languageofsignage_othersspec'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q35arethesignageseasilyreadable"colspan="2"><strong>q35arethesignageseasilyreadable</strong><br />' + (feature.properties['q35arethesignageseasilyreadable'] !== null ? autolinker.link(feature.properties['q35arethesignageseasilyreadable'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_busnumb"colspan="2"><strong>q36_informationonsignage_busnumb</strong><br />' + (feature.properties['q36_informationonsignage_busnumb'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_busnumb'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_routeof"colspan="2"><strong>q36_informationonsignage_routeof</strong><br />' + (feature.properties['q36_informationonsignage_routeof'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_routeof'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_destina"colspan="2"><strong>q36_informationonsignage_destina</strong><br />' + (feature.properties['q36_informationonsignage_destina'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_destina'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_frequen"colspan="2"><strong>q36_informationonsignage_frequen</strong><br />' + (feature.properties['q36_informationonsignage_frequen'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_frequen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_timeofa"colspan="2"><strong>q36_informationonsignage_timeofa</strong><br />' + (feature.properties['q36_informationonsignage_timeofa'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_timeofa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_anyhelp"colspan="2"><strong>q36_informationonsignage_anyhelp</strong><br />' + (feature.properties['q36_informationonsignage_anyhelp'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_anyhelp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_nearbyt"colspan="2"><strong>q36_informationonsignage_nearbyt</strong><br />' + (feature.properties['q36_informationonsignage_nearbyt'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_nearbyt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_otherne"colspan="2"><strong>q36_informationonsignage_otherne</strong><br />' + (feature.properties['q36_informationonsignage_otherne'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_otherne'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_nameloc"colspan="2"><strong>q36_informationonsignage_nameloc</strong><br />' + (feature.properties['q36_informationonsignage_nameloc'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_nameloc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_none"colspan="2"><strong>q36_informationonsignage_none</strong><br />' + (feature.properties['q36_informationonsignage_none'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_none'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="oq36_informationonsignage_therpl"colspan="2"><strong>oq36_informationonsignage_therpl</strong><br />' + (feature.properties['oq36_informationonsignage_therpl'] !== null ? autolinker.link(feature.properties['oq36_informationonsignage_therpl'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q36_informationonsignage_otherss"colspan="2"><strong>q36_informationonsignage_otherss</strong><br />' + (feature.properties['q36_informationonsignage_otherss'] !== null ? autolinker.link(feature.properties['q36_informationonsignage_otherss'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q37isthereanysignagefordifferent"colspan="2"><strong>q37isthereanysignagefordifferent</strong><br />' + (feature.properties['q37isthereanysignagefordifferent'] !== null ? autolinker.link(feature.properties['q37isthereanysignagefordifferent'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q38aretherebrailleforminformatio"colspan="2"><strong>q38aretherebrailleforminformatio</strong><br />' + (feature.properties['q38aretherebrailleforminformatio'] !== null ? autolinker.link(feature.properties['q38aretherebrailleforminformatio'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q39isthereprovisionofaudioinform"colspan="2"><strong>q39isthereprovisionofaudioinform</strong><br />' + (feature.properties['q39isthereprovisionofaudioinform'] !== null ? autolinker.link(feature.properties['q39isthereprovisionofaudioinform'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40arethereanyobstructionsinthee"colspan="2"><strong>q40arethereanyobstructionsinthee</strong><br />' + (feature.properties['q40arethereanyobstructionsinthee'] !== null ? autolinker.link(feature.properties['q40arethereanyobstructionsinthee'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_parkedvehicles"colspan="2"><strong>q40a_obstructions_parkedvehicles</strong><br />' + (feature.properties['q40a_obstructions_parkedvehicles'] !== null ? autolinker.link(feature.properties['q40a_obstructions_parkedvehicles'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_tree"colspan="2"><strong>q40a_obstructions_tree</strong><br />' + (feature.properties['q40a_obstructions_tree'] !== null ? autolinker.link(feature.properties['q40a_obstructions_tree'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_electricpole"colspan="2"><strong>q40a_obstructions_electricpole</strong><br />' + (feature.properties['q40a_obstructions_electricpole'] !== null ? autolinker.link(feature.properties['q40a_obstructions_electricpole'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_streetlight"colspan="2"><strong>q40a_obstructions_streetlight</strong><br />' + (feature.properties['q40a_obstructions_streetlight'] !== null ? autolinker.link(feature.properties['q40a_obstructions_streetlight'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_manhole"colspan="2"><strong>q40a_obstructions_manhole</strong><br />' + (feature.properties['q40a_obstructions_manhole'] !== null ? autolinker.link(feature.properties['q40a_obstructions_manhole'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_fencing"colspan="2"><strong>q40a_obstructions_fencing</strong><br />' + (feature.properties['q40a_obstructions_fencing'] !== null ? autolinker.link(feature.properties['q40a_obstructions_fencing'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_debrisorlitter"colspan="2"><strong>q40a_obstructions_debrisorlitter</strong><br />' + (feature.properties['q40a_obstructions_debrisorlitter'] !== null ? autolinker.link(feature.properties['q40a_obstructions_debrisorlitter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_largegarbagebi"colspan="2"><strong>q40a_obstructions_largegarbagebi</strong><br />' + (feature.properties['q40a_obstructions_largegarbagebi'] !== null ? autolinker.link(feature.properties['q40a_obstructions_largegarbagebi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_bollardsnearth"colspan="2"><strong>q40a_obstructions_bollardsnearth</strong><br />' + (feature.properties['q40a_obstructions_bollardsnearth'] !== null ? autolinker.link(feature.properties['q40a_obstructions_bollardsnearth'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_otherobstructi"colspan="2"><strong>q40a_obstructions_otherobstructi</strong><br />' + (feature.properties['q40a_obstructions_otherobstructi'] !== null ? autolinker.link(feature.properties['q40a_obstructions_otherobstructi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40a_obstructions_othersspecify"colspan="2"><strong>q40a_obstructions_othersspecify</strong><br />' + (feature.properties['q40a_obstructions_othersspecify'] !== null ? autolinker.link(feature.properties['q40a_obstructions_othersspecify'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var131"colspan="2"><strong>var131</strong><br />' + (feature.properties['var131'] !== null ? autolinker.link(feature.properties['var131'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var132"colspan="2"><strong>var132</strong><br />' + (feature.properties['var132'] !== null ? autolinker.link(feature.properties['var132'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40b_obstructions_otherobstructi"colspan="2"><strong>q40b_obstructions_otherobstructi</strong><br />' + (feature.properties['q40b_obstructions_otherobstructi'] !== null ? autolinker.link(feature.properties['q40b_obstructions_otherobstructi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q40c_obstructions_othersspecify"colspan="2"><strong>q40c_obstructions_othersspecify</strong><br />' + (feature.properties['q40c_obstructions_othersspecify'] !== null ? autolinker.link(feature.properties['q40c_obstructions_othersspecify'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q41aretheresurfacemarkingsforbus"colspan="2"><strong>q41aretheresurfacemarkingsforbus</strong><br />' + (feature.properties['q41aretheresurfacemarkingsforbus'] !== null ? autolinker.link(feature.properties['q41aretheresurfacemarkingsforbus'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q42_ayesbutnearthebusstopatatraf"colspan="2"><strong>q42_ayesbutnearthebusstopatatraf</strong><br />' + (feature.properties['q42_ayesbutnearthebusstopatatraf'] !== null ? autolinker.link(feature.properties['q42_ayesbutnearthebusstopatatraf'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q42_byesbutinnearbyshopsplaces"colspan="2"><strong>q42_byesbutinnearbyshopsplaces</strong><br />' + (feature.properties['q42_byesbutinnearbyshopsplaces'] !== null ? autolinker.link(feature.properties['q42_byesbutinnearbyshopsplaces'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q42_cnocctvcamerasfound"colspan="2"><strong>q42_cnocctvcamerasfound</strong><br />' + (feature.properties['q42_cnocctvcamerasfound'] !== null ? autolinker.link(feature.properties['q42_cnocctvcamerasfound'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q42_datthebusstand"colspan="2"><strong>q42_datthebusstand</strong><br />' + (feature.properties['q42_datthebusstand'] !== null ? autolinker.link(feature.properties['q42_datthebusstand'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q43howmanycctvcamerasarevisiblen"colspan="2"><strong>q43howmanycctvcamerasarevisiblen</strong><br />' + (feature.properties['q43howmanycctvcamerasarevisiblen'] !== null ? autolinker.link(feature.properties['q43howmanycctvcamerasarevisiblen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q44_government"colspan="2"><strong>q44_government</strong><br />' + (feature.properties['q44_government'] !== null ? autolinker.link(feature.properties['q44_government'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q44_privateinstitution"colspan="2"><strong>q44_privateinstitution</strong><br />' + (feature.properties['q44_privateinstitution'] !== null ? autolinker.link(feature.properties['q44_privateinstitution'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q44_notsure"colspan="2"><strong>q44_notsure</strong><br />' + (feature.properties['q44_notsure'] !== null ? autolinker.link(feature.properties['q44_notsure'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q45isthereanytrafficpolicemanpol"colspan="2"><strong>q45isthereanytrafficpolicemanpol</strong><br />' + (feature.properties['q45isthereanytrafficpolicemanpol'] !== null ? autolinker.link(feature.properties['q45isthereanytrafficpolicemanpol'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var145"colspan="2"><strong>var145</strong><br />' + (feature.properties['var145'] !== null ? autolinker.link(feature.properties['var145'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q47aretheresecuritypersonnelstat"colspan="2"><strong>q47aretheresecuritypersonnelstat</strong><br />' + (feature.properties['q47aretheresecuritypersonnelstat'] !== null ? autolinker.link(feature.properties['q47aretheresecuritypersonnelstat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var147"colspan="2"><strong>var147</strong><br />' + (feature.properties['var147'] !== null ? autolinker.link(feature.properties['var147'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q48istheareanearorsurroundingthe"colspan="2"><strong>q48istheareanearorsurroundingthe</strong><br />' + (feature.properties['q48istheareanearorsurroundingthe'] !== null ? autolinker.link(feature.properties['q48istheareanearorsurroundingthe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var149"colspan="2"><strong>var149</strong><br />' + (feature.properties['var149'] !== null ? autolinker.link(feature.properties['var149'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q49isthereanyliquorshopwithin50m"colspan="2"><strong>q49isthereanyliquorshopwithin50m</strong><br />' + (feature.properties['q49isthereanyliquorshopwithin50m'] !== null ? autolinker.link(feature.properties['q49isthereanyliquorshopwithin50m'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q50isthereanyshoporspotorisolate"colspan="2"><strong>q50isthereanyshoporspotorisolate</strong><br />' + (feature.properties['q50isthereanyshoporspotorisolate'] !== null ? autolinker.link(feature.properties['q50isthereanyshoporspotorisolate'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var152"colspan="2"><strong>var152</strong><br />' + (feature.properties['var152'] !== null ? autolinker.link(feature.properties['var152'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Q51_aCafRestaurant"colspan="2"><strong>Q51_aCafRestaurant</strong><br />' + (feature.properties['Q51_aCafRestaurant'] !== null ? autolinker.link(feature.properties['Q51_aCafRestaurant'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q51_bteashop"colspan="2"><strong>q51_bteashop</strong><br />' + (feature.properties['q51_bteashop'] !== null ? autolinker.link(feature.properties['q51_bteashop'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q51_cconviniencestore"colspan="2"><strong>q51_cconviniencestore</strong><br />' + (feature.properties['q51_cconviniencestore'] !== null ? autolinker.link(feature.properties['q51_cconviniencestore'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q51_dmall"colspan="2"><strong>q51_dmall</strong><br />' + (feature.properties['q51_dmall'] !== null ? autolinker.link(feature.properties['q51_dmall'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q51_ebank"colspan="2"><strong>q51_ebank</strong><br />' + (feature.properties['q51_ebank'] !== null ? autolinker.link(feature.properties['q51_ebank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q51_fatm"colspan="2"><strong>q51_fatm</strong><br />' + (feature.properties['q51_fatm'] !== null ? autolinker.link(feature.properties['q51_fatm'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q51_hnone"colspan="2"><strong>q51_hnone</strong><br />' + (feature.properties['q51_hnone'] !== null ? autolinker.link(feature.properties['q51_hnone'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q51_gothers"colspan="2"><strong>q51_gothers</strong><br />' + (feature.properties['q51_gothers'] !== null ? autolinker.link(feature.properties['q51_gothers'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var161"colspan="2"><strong>var161</strong><br />' + (feature.properties['var161'] !== null ? autolinker.link(feature.properties['var161'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q52arethereanypublictoiletsinthe"colspan="2"><strong>q52arethereanypublictoiletsinthe</strong><br />' + (feature.properties['q52arethereanypublictoiletsinthe'] !== null ? autolinker.link(feature.properties['q52arethereanypublictoiletsinthe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q52aisthereaseparatetoiletfacili"colspan="2"><strong>q52aisthereaseparatetoiletfacili</strong><br />' + (feature.properties['q52aisthereaseparatetoiletfacili'] !== null ? autolinker.link(feature.properties['q52aisthereaseparatetoiletfacili'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q53isthetoiletopenforuseorclosed"colspan="2"><strong>q53isthetoiletopenforuseorclosed</strong><br />' + (feature.properties['q53isthetoiletopenforuseorclosed'] !== null ? autolinker.link(feature.properties['q53isthetoiletopenforuseorclosed'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var165"colspan="2"><strong>var165</strong><br />' + (feature.properties['var165'] !== null ? autolinker.link(feature.properties['var165'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q54isthereanyleakagefromthepubli"colspan="2"><strong>q54isthereanyleakagefromthepubli</strong><br />' + (feature.properties['q54isthereanyleakagefromthepubli'] !== null ? autolinker.link(feature.properties['q54isthereanyleakagefromthepubli'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q55isthereanypublicdrinkingwater"colspan="2"><strong>q55isthereanypublicdrinkingwater</strong><br />' + (feature.properties['q55isthereanypublicdrinkingwater'] !== null ? autolinker.link(feature.properties['q55isthereanypublicdrinkingwater'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q55aisitdispensingwater"colspan="2"><strong>q55aisitdispensingwater</strong><br />' + (feature.properties['q55aisitdispensingwater'] !== null ? autolinker.link(feature.properties['q55aisitdispensingwater'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q56isthereawastecollectionbinint"colspan="2"><strong>q56isthereawastecollectionbinint</strong><br />' + (feature.properties['q56isthereawastecollectionbinint'] !== null ? autolinker.link(feature.properties['q56isthereawastecollectionbinint'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q57_autostand"colspan="2"><strong>q57_autostand</strong><br />' + (feature.properties['q57_autostand'] !== null ? autolinker.link(feature.properties['q57_autostand'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q57_busterminal"colspan="2"><strong>q57_busterminal</strong><br />' + (feature.properties['q57_busterminal'] !== null ? autolinker.link(feature.properties['q57_busterminal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q57_metrostation"colspan="2"><strong>q57_metrostation</strong><br />' + (feature.properties['q57_metrostation'] !== null ? autolinker.link(feature.properties['q57_metrostation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q57_localtrainstation"colspan="2"><strong>q57_localtrainstation</strong><br />' + (feature.properties['q57_localtrainstation'] !== null ? autolinker.link(feature.properties['q57_localtrainstation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q57_sharedautostop"colspan="2"><strong>q57_sharedautostop</strong><br />' + (feature.properties['q57_sharedautostop'] !== null ? autolinker.link(feature.properties['q57_sharedautostop'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q57_publiccyclesharingfacility"colspan="2"><strong>q57_publiccyclesharingfacility</strong><br />' + (feature.properties['q57_publiccyclesharingfacility'] !== null ? autolinker.link(feature.properties['q57_publiccyclesharingfacility'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q57_none"colspan="2"><strong>q57_none</strong><br />' + (feature.properties['q57_none'] !== null ? autolinker.link(feature.properties['q57_none'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q58_direction_autostand"colspan="2"><strong>q58_direction_autostand</strong><br />' + (feature.properties['q58_direction_autostand'] !== null ? autolinker.link(feature.properties['q58_direction_autostand'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q58_direction_busterminal"colspan="2"><strong>q58_direction_busterminal</strong><br />' + (feature.properties['q58_direction_busterminal'] !== null ? autolinker.link(feature.properties['q58_direction_busterminal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q58_direction_metrostation"colspan="2"><strong>q58_direction_metrostation</strong><br />' + (feature.properties['q58_direction_metrostation'] !== null ? autolinker.link(feature.properties['q58_direction_metrostation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q58_direction_localtrainstation"colspan="2"><strong>q58_direction_localtrainstation</strong><br />' + (feature.properties['q58_direction_localtrainstation'] !== null ? autolinker.link(feature.properties['q58_direction_localtrainstation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q58_direction_sharedautostop"colspan="2"><strong>q58_direction_sharedautostop</strong><br />' + (feature.properties['q58_direction_sharedautostop'] !== null ? autolinker.link(feature.properties['q58_direction_sharedautostop'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q58_direction_publiccyclesharing"colspan="2"><strong>q58_direction_publiccyclesharing</strong><br />' + (feature.properties['q58_direction_publiccyclesharing'] !== null ? autolinker.link(feature.properties['q58_direction_publiccyclesharing'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q59_approxdistance_autostand"colspan="2"><strong>q59_approxdistance_autostand</strong><br />' + (feature.properties['q59_approxdistance_autostand'] !== null ? autolinker.link(feature.properties['q59_approxdistance_autostand'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q59_approxdistance_busterminal"colspan="2"><strong>q59_approxdistance_busterminal</strong><br />' + (feature.properties['q59_approxdistance_busterminal'] !== null ? autolinker.link(feature.properties['q59_approxdistance_busterminal'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q59_approxdistance_metrostation"colspan="2"><strong>q59_approxdistance_metrostation</strong><br />' + (feature.properties['q59_approxdistance_metrostation'] !== null ? autolinker.link(feature.properties['q59_approxdistance_metrostation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q59_approxdistance_localtrainsta"colspan="2"><strong>q59_approxdistance_localtrainsta</strong><br />' + (feature.properties['q59_approxdistance_localtrainsta'] !== null ? autolinker.link(feature.properties['q59_approxdistance_localtrainsta'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q59_approxdistance_sharedautosho"colspan="2"><strong>q59_approxdistance_sharedautosho</strong><br />' + (feature.properties['q59_approxdistance_sharedautosho'] !== null ? autolinker.link(feature.properties['q59_approxdistance_sharedautosho'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q59_approxdistance_publiccyclesh"colspan="2"><strong>q59_approxdistance_publiccyclesh</strong><br />' + (feature.properties['q59_approxdistance_publiccyclesh'] !== null ? autolinker.link(feature.properties['q59_approxdistance_publiccyclesh'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q60welllitpathwayafterdark_autos"colspan="2"><strong>q60welllitpathwayafterdark_autos</strong><br />' + (feature.properties['q60welllitpathwayafterdark_autos'] !== null ? autolinker.link(feature.properties['q60welllitpathwayafterdark_autos'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q60welllitpathwayafterdark_buste"colspan="2"><strong>q60welllitpathwayafterdark_buste</strong><br />' + (feature.properties['q60welllitpathwayafterdark_buste'] !== null ? autolinker.link(feature.properties['q60welllitpathwayafterdark_buste'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q60welllitpathwayafterdark_metro"colspan="2"><strong>q60welllitpathwayafterdark_metro</strong><br />' + (feature.properties['q60welllitpathwayafterdark_metro'] !== null ? autolinker.link(feature.properties['q60welllitpathwayafterdark_metro'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q60welllitpathwayafterdark_local"colspan="2"><strong>q60welllitpathwayafterdark_local</strong><br />' + (feature.properties['q60welllitpathwayafterdark_local'] !== null ? autolinker.link(feature.properties['q60welllitpathwayafterdark_local'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q60welllitpathwayafterdark_share"colspan="2"><strong>q60welllitpathwayafterdark_share</strong><br />' + (feature.properties['q60welllitpathwayafterdark_share'] !== null ? autolinker.link(feature.properties['q60welllitpathwayafterdark_share'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q60welllitpathwayafterdark_publi"colspan="2"><strong>q60welllitpathwayafterdark_publi</strong><br />' + (feature.properties['q60welllitpathwayafterdark_publi'] !== null ? autolinker.link(feature.properties['q60welllitpathwayafterdark_publi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q66isthebusstopneararoadjunction"colspan="2"><strong>q66isthebusstopneararoadjunction</strong><br />' + (feature.properties['q66isthebusstopneararoadjunction'] !== null ? autolinker.link(feature.properties['q66isthebusstopneararoadjunction'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q64_luxreading_insidetheshelter"colspan="2"><strong>q64_luxreading_insidetheshelter</strong><br />' + (feature.properties['q64_luxreading_insidetheshelter'] !== null ? autolinker.link(feature.properties['q64_luxreading_insidetheshelter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="q64_luxreading_adjacenttotheshel"colspan="2"><strong>q64_luxreading_adjacenttotheshel</strong><br />' + (feature.properties['q64_luxreading_adjacenttotheshel'] !== null ? autolinker.link(feature.properties['q64_luxreading_adjacenttotheshel'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="var198"colspan="2"><strong>var198</strong><br />' + (feature.properties['var198'] !== null ? autolinker.link(feature.properties['var198'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="latitude"colspan="2"><strong>latitude</strong><br />' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="longitude"colspan="2"><strong>longitude</strong><br />' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Busstopswithluxlesserthan40_13_0() {
+            return {
+                pane: 'pane_Busstopswithluxlesserthan40_13',
+                radius: 3.2,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,253,72,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Busstopswithluxlesserthan40_13');
+        map.getPane('pane_Busstopswithluxlesserthan40_13').style.zIndex = 413;
+        map.getPane('pane_Busstopswithluxlesserthan40_13').style['mix-blend-mode'] = 'normal';
+        var layer_Busstopswithluxlesserthan40_13 = new L.geoJson(json_Busstopswithluxlesserthan40_13, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Busstopswithluxlesserthan40_13',
+            layerName: 'layer_Busstopswithluxlesserthan40_13',
+            pane: 'pane_Busstopswithluxlesserthan40_13',
+            onEachFeature: pop_Busstopswithluxlesserthan40_13,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Busstopswithluxlesserthan40_13_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Busstopswithluxlesserthan40_13);
+        map.addLayer(layer_Busstopswithluxlesserthan40_13);
+        var overlaysTree = [
+            {label: '<img src="legend/Busstopswithluxlesserthan40_13.png" /> Bus stops with lux lesser than 40', layer: layer_Busstopswithluxlesserthan40_13},
+            {label: '<img src="legend/Route48C_12.png" /> Route 48C', layer: layer_Route48C_12},
+            {label: '<img src="legend/Route4_11.png" /> Route 4', layer: layer_Route4_11},
+            {label: '<img src="legend/Route32B_10.png" /> Route 32B', layer: layer_Route32B_10},
+            {label: '<img src="legend/Route48C_9.png" /> Route 48C', layer: layer_Route48C_9},
+            {label: '<img src="legend/Route4_8.png" /> Route 4', layer: layer_Route4_8},
+            {label: '<img src="legend/Route32B_7.png" /> Route 32B', layer: layer_Route32B_7},
+            {label: '<img src="legend/Route2A_6.png" /> Route 2A', layer: layer_Route2A_6},
+            {label: '<img src="legend/Route29C_5.png" /> Route 29C', layer: layer_Route29C_5},
+            {label: '<img src="legend/Route26_4.png" /> Route 26', layer: layer_Route26_4},
+            {label: '<img src="legend/Route159A_3.png" /> Route 159A', layer: layer_Route159A_3},
+            {label: '<img src="legend/Route119_2.png" /> Route 119', layer: layer_Route119_2},
+            {label: '<img src="legend/Route102K_1.png" /> Route 102K', layer: layer_Route102K_1},
+            {label: "OpenStreetMap", layer: layer_OpenStreetMap_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: true,
+        });
+        lay.addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
